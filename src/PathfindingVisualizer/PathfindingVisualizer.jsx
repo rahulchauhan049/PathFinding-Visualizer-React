@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Node from './Node/Node'
 import './PathfindingVisualizer.css'
 import {dijkstra, getNodesInShortestPathOrder} from '../algorithms/dijkstra';
+import Button from '@mui/material/Button';
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 15;
@@ -112,7 +113,7 @@ function PathfindingVisualizer() {
 
     return (
         <>
-            <button onClick={() => {visualizeDijkstra()}}>Visualize Dijkstra's Algorithm</button>
+            <Button variant="contained" onClick={() => {visualizeDijkstra()}}>Visualize Dijkstra's Algorithm</Button>
             <div className="grid">
                 {grid.map((row, rowIdx) => {
                     return <div key={rowIdx}>
