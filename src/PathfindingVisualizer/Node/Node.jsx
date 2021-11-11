@@ -1,10 +1,11 @@
 import React from 'react'
+import './Node.css'
 
-function Node() {
+
+function Node({ isStart, isFinish }) {
+    const extraClassName = isStart ? 'node-start' : isFinish ? 'node-finish' : ''
     return (
-        <div>
-            Bar
-        </div>
+        <div className={`node ${extraClassName}`}></div>
     )
 }
 
