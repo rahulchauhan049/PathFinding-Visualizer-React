@@ -1,0 +1,10 @@
+.array-container {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .array-bar {
+    display: inline-block;
+    margin: 0 1px;
+  }

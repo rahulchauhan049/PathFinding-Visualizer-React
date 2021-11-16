@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Node from './Node/Node'
+import Node from './Node/Node.js'
 import './PathfindingVisualizer.css'
 import {dijkstra, getNodesInShortestPathOrder} from '../algorithms/dijkstra';
 import Button from '@mui/material/Button';

@@ -1,11 +1,12 @@
 import './App.css';
-import PathfindingVisualizer from './PathfindingVisualizer/PathfindingVisualizer'
-
+import PathfindingVisualizer from './PathfindingVisualizer/PathfindingVisualizer.js'
+import SortingVisualizer from './SortingVisualizer/SortingVisualizer';
 
 function App() {
   return (
     <div className="App">
-      <PathfindingVisualizer></PathfindingVisualizer>
+      <SortingVisualizer></SortingVisualizer>
+      {/* <PathfindingVisualizer></PathfindingVisualizer> */}
     </div>
   );
 }
