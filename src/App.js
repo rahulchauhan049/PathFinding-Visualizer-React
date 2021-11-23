@@ -20,7 +20,7 @@ function App() {
   return (
     <Container>
       <ToggleButton>
-        <Button variant="text" onClick={() => toggleVisualization()}>
+        <Button variant="outlined" onClick={() => toggleVisualization()}>
           Switch to {view === "sorting" ? "Pathfinding" : "Sorting"} Visualization
         </Button>
       </ToggleButton>
@@ -39,7 +39,7 @@ let Container = styled.div`
 `;
 
 let ToggleButton = styled.div`
-${tw`justify-center text-center`}
+${tw`justify-center text-center m-1`}
 `;
 
 let Visualizations = styled.div`

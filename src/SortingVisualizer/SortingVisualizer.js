@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import "./SortingVisualizer.css";
 import { getMergeSortAnimations } from "../algorithms/sorting/mergeSort";
 import Slider from "@mui/material/Slider";
 import Button from "@mui/material/Button";
@@ -65,6 +64,8 @@ function SortingVisualizer() {
             aria-label="Default"
             onChange={(e) => setArrayLength(Number(e.target.value))}
             valueLabelDisplay="auto"
+            min={5}
+            max={80}
           />
        </SliderBox>
         <RandomButton>
@@ -77,6 +78,11 @@ function SortingVisualizer() {
             Merge Sort
           </Button>
         </MergeButton>
+        <BubbleSortButton>
+          <Button variant="text" onClick={() => sortArray()}>
+            Bubble Sort
+          </Button>
+        </BubbleSortButton>
       </Toolbar>
           <Visualization>
               <Height></Height>
@@ -103,22 +109,23 @@ let App = styled.div`
 `;
 
 let Toolbar = styled.div`
-${tw`flex justify-between items-center bg-yellow-50 `}
+${tw`flex justify-between items-center bg-yellow-50 h-10 `}
 `;
 let Visualization = styled.div`
 ${tw`flex justify-around align-items[flex-end] flex-1 bg-red-50`}
 `;
 
 let SliderBox = styled.div`
-${tw`flex-1`}
+${tw`flex-1 m-5`}
 `;
 
 let RandomButton = styled.div``;
 let MergeButton = styled.div``;
+let BubbleSortButton = styled.div``;
 
 let Height = styled.div`
 ${tw`h-screen`}
 `;
 
 let Bar = styled.div`
-${tw` mx-0.5 max-h-screen mb-20`}`;
+${tw` mx-0.5 max-h-screen mb-24`}`;
