@@ -4,10 +4,14 @@ import Slider from "@mui/material/Slider";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
 import tw from "twin.macro"
+import { getBubbleSortAnimations } from "../algorithms/sorting/bubbleSort";
+const { JSDOM } = require("jsdom")
+const { window } = new JSDOM()
 
 function SortingVisualizer() {
   const [heightArray, setHeightArray] = React.useState([]);
   const [arrayLength, setArrayLength] = React.useState(20);
+  const [timeTaken, setTimeTaken] = React.useState(0);
 
   useEffect(() => {
     let arrayOfSizeN = Array(arrayLength)
@@ -31,13 +35,15 @@ function SortingVisualizer() {
     setHeightArray(shuffledArrayOfSizeN);
   };
 
-  const sortArray = () => {
+  const handleMergeSort = () => {
+    let start = window.performance.now()
+    let stop;
     const animations = getMergeSortAnimations(heightArray);
-    for (let i = 0; i < animations.length; i++) {
+    animations.forEach((animation, i) => {
       const arrayBars = document.getElementsByClassName("array-bar");
       const isColorChange = i % 3 !== 2;
       if (isColorChange) {
-        const [barOneIdx, barTwoIdx] = animations[i];
+        const [barOneIdx, barTwoIdx] = animation;
         const barOneStyle = arrayBars[barOneIdx].style;
         const barTwoStyle = arrayBars[barTwoIdx].style;
         const color = i % 3 === 0 ? "red" : "#4286f4";
@@ -47,12 +53,55 @@ function SortingVisualizer() {
         }, i * 10);
       } else {
         setTimeout(() => {
-          const [barOneIdx, newHeight] = animations[i];
+          const [barOneIdx, newHeight] = animation;
           const barOneStyle = arrayBars[barOneIdx].style;
           barOneStyle.height = `${newHeight}%`;
+          if (i === animations.length - 1) {
+            stop = window.performance.now()
+            setTimeTaken(parseFloat((stop - start) / 1000 ).toFixed(2))
+          }
         }, i * 10);
       }
-    }
+    })
+
+  };
+
+  const handleBubbleSort = () => {
+    let start = window.performance.now()
+    let stop;
+    let bubbleSortAnimations = getBubbleSortAnimations(heightArray);
+    console.log(bubbleSortAnimations);
+    bubbleSortAnimations.forEach((animation, idx) => {
+      const arrayBars = document.getElementsByClassName("array-bar");
+      let animationType = animation.animationType;
+      const [barOneIdx, barTwoIdx] = animation.index;
+      const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
+      if (animationType === "comparing") {
+        setTimeout(() => {
+          barOneStyle.backgroundColor = "red";
+          barTwoStyle.backgroundColor = "red";
+        }, idx * 10);
+      } else if(animationType === "swaping") {
+        const [barOneHeight, barTwoHeight] = animation.value;
+        setTimeout(() => {
+          barOneStyle.height = `${barOneHeight}%`;
+          barTwoStyle.height = `${barTwoHeight}%`;
+        }, idx * 10);
+      } else {
+        setTimeout(() => {
+          barOneStyle.backgroundColor = "#4286f4";
+          barTwoStyle.backgroundColor = "#4286f4";
+          if (idx === bubbleSortAnimations.length - 1) {
+            stop = window.performance.now()
+            setTimeTaken(parseFloat((stop - start) / 1000 ).toFixed(2))
+          }
+          
+        }, idx * 10);
+      }
+    } );
+    
+
   };
 
   return (
@@ -74,15 +123,18 @@ function SortingVisualizer() {
           </Button>
         </RandomButton>
         <MergeButton>
-          <Button variant="text" onClick={() => sortArray()}>
+          <Button variant="text" onClick={() => handleMergeSort()}>
             Merge Sort
           </Button>
         </MergeButton>
         <BubbleSortButton>
-          <Button variant="text" onClick={() => sortArray()}>
+          <Button variant="text" onClick={() => handleBubbleSort()}>
             Bubble Sort
           </Button>
         </BubbleSortButton>
+        <TimeTaken>
+          <p>Time Taken: {timeTaken} seconds</p>
+        </TimeTaken>
       </Toolbar>
           <Visualization>
               <Height></Height>
@@ -122,6 +174,8 @@ ${tw`flex-1 m-5`}
 let RandomButton = styled.div``;
 let MergeButton = styled.div``;
 let BubbleSortButton = styled.div``;
+
+let TimeTaken = styled.div``;
 
 let Height = styled.div`
 ${tw`h-screen`}
