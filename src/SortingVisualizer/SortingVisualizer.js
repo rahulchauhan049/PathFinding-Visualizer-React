@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import styled from "styled-components";
 import tw from "twin.macro"
 import { getBubbleSortAnimations } from "../algorithms/sorting/bubbleSort";
+import { getSelectionsortAnimations } from "../algorithms/sorting/selectionSort";
 const { JSDOM } = require("jsdom")
 const { window } = new JSDOM()
 
@@ -58,7 +59,7 @@ function SortingVisualizer() {
           barOneStyle.height = `${newHeight}%`;
           if (i === animations.length - 1) {
             stop = window.performance.now()
-            setTimeTaken(parseFloat((stop - start) / 1000 ).toFixed(2))
+            setTimeTaken(parseFloat((stop - start) / 1000).toFixed(2))
           }
         }, i * 10);
       }
@@ -82,7 +83,7 @@ function SortingVisualizer() {
           barOneStyle.backgroundColor = "red";
           barTwoStyle.backgroundColor = "red";
         }, idx * 10);
-      } else if(animationType === "swaping") {
+      } else if (animationType === "swaping") {
         const [barOneHeight, barTwoHeight] = animation.value;
         setTimeout(() => {
           barOneStyle.height = `${barOneHeight}%`;
@@ -94,64 +95,127 @@ function SortingVisualizer() {
           barTwoStyle.backgroundColor = "#4286f4";
           if (idx === bubbleSortAnimations.length - 1) {
             stop = window.performance.now()
-            setTimeTaken(parseFloat((stop - start) / 1000 ).toFixed(2))
+            setTimeTaken(parseFloat((stop - start) / 1000).toFixed(2))
           }
           
         }, idx * 10);
       }
-    } );
+    });
+  }
     
+    const handleSelectionSort = () => {
+      let start = window.performance.now()
+      let stop;
+      let selectionSortAnimation = getSelectionsortAnimations(heightArray);
+      selectionSortAnimation.forEach((animation, idx) => {
+        const arrayBars = document.getElementsByClassName("array-bar");
+        let animationType = animation.animationType;
+        const [barOneIdx, barTwoIdx] = animation.index;
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        if (animationType === "comparing") {
+          setTimeout(() => {
+            for (let i = 0; i < arrayBars.length; i++) {
+              if (arrayBars[i].style.backgroundColor !== "green" && arrayBars[i].style.backgroundColor !== "cyan") {
+                arrayBars[i].style.backgroundColor = "#4286f4";
+              }
+            }
+            barTwoStyle.backgroundColor = "red";
+          }, idx * 10);
+        } else if (animationType === "minimum") {
+          setTimeout(() => {
+            for (let i = 0; i < arrayBars.length; i++) {
+              if (arrayBars[i].style.backgroundColor !== "cyan") {
+                arrayBars[i].style.backgroundColor = "#4286f4";
+              }
+            }
+            barOneStyle.backgroundColor = "green";
+          }, idx * 10);
+        } else if (animationType === "starting") {
+          setTimeout(() => {
+            for (let i = 0; i < arrayBars.length; i++) {
+              arrayBars[i].style.backgroundColor = "#4286f4";
+            }
+            barOneStyle.backgroundColor = "cyan";
+          }, idx * 10);
+        } else if (animationType === "swaping") {
+          const [barOneHeight, barTwoHeight] = animation.value;
+          setTimeout(() => {
+            barOneStyle.height = `${barOneHeight}%`;
+            barTwoStyle.height = `${barTwoHeight}%`;
+          }, idx * 10);
+        } else {
+          setTimeout(() => {
 
-  };
+     
+            if (idx === selectionSortAnimation.length - 1) {
+              stop = window.performance.now()
+              setTimeTaken(parseFloat((stop - start) / 1000).toFixed(2))
+            }
+            
+          }, idx * 10);
+        }
+      });
+    }
 
-  return (
-    <App>
-      <Toolbar>
-        <SliderBox>
-          <Slider
-            defaultValue={arrayLength}
-            aria-label="Default"
-            onChange={(e) => setArrayLength(Number(e.target.value))}
-            valueLabelDisplay="auto"
-            min={5}
-            max={80}
-          />
-       </SliderBox>
-        <RandomButton>
-          <Button variant="text" onClick={() => shuffleArray()}>
-            Random
-          </Button>
-        </RandomButton>
-        <MergeButton>
-          <Button variant="text" onClick={() => handleMergeSort()}>
-            Merge Sort
-          </Button>
-        </MergeButton>
-        <BubbleSortButton>
-          <Button variant="text" onClick={() => handleBubbleSort()}>
-            Bubble Sort
-          </Button>
-        </BubbleSortButton>
-        <TimeTaken>
-          <p>Time Taken: {timeTaken} seconds</p>
-        </TimeTaken>
-      </Toolbar>
-          <Visualization>
-              <Height></Height>
-        {heightArray.map((height, index) => (
-          <Bar className="array-bar"
-            key={index}
-            style={{
-              width: `${0.5}vw`,
-              backgroundColor: "#4286f4",
-              height: `${height}%`,
-            }}
-          ></Bar>
-        ))}  
-      </Visualization>
 
-    </App>
-  );
+    return (
+      <App>
+        <Toolbar>
+          <Buttons>
+            <RandomButton>
+              <Button variant="text" onClick={() => shuffleArray()}>
+                Random
+              </Button>
+            </RandomButton>
+            <MergeButton>
+              <Button variant="text" onClick={() => handleMergeSort()}>
+                Merge Sort
+              </Button>
+            </MergeButton>
+            <BubbleSortButton>
+              <Button variant="text" onClick={() => handleBubbleSort()}>
+                Bubble Sort
+              </Button>
+            </BubbleSortButton>
+            <SelectionSortButton>
+              <Button variant="text" onClick={() => handleSelectionSort()}>
+                Selection Sort
+              </Button>
+            </SelectionSortButton>
+            <TimeTaken>
+              <p>Time Taken: {timeTaken} seconds</p>
+            </TimeTaken>
+          </Buttons>
+          <Controllers>
+            <Slider
+              defaultValue={arrayLength}
+              aria-label="Default"
+              onChange={(e) => setArrayLength(Number(e.target.value))}
+              valueLabelDisplay="auto"
+              min={5}
+              max={80}
+            />
+          </Controllers>
+        
+        </Toolbar>
+        <Visualization>
+          <Height></Height>
+          {heightArray.map((height, index) => (
+            <Bar className="array-bar"
+              key={index}
+              style={{
+                width: `${0.5}vw`,
+                backgroundColor: "#4286f4",
+                height: `${height}%`,
+              }}
+            ></Bar>
+          ))}
+        </Visualization>
+
+      </App>
+    );
+  
 }
 
 export default SortingVisualizer;
@@ -161,19 +225,24 @@ let App = styled.div`
 `;
 
 let Toolbar = styled.div`
-${tw`flex justify-between items-center bg-yellow-50 h-10 `}
+${tw` `}
 `;
 let Visualization = styled.div`
 ${tw`flex justify-around align-items[flex-end] flex-1 bg-red-50`}
 `;
 
-let SliderBox = styled.div`
-${tw`flex-1 m-5`}
+let Buttons = styled.div`
+  ${tw`flex justify-center items-center bg-yellow-50 h-10`}
+`;
+
+let Controllers = styled.div`
+${tw`flex-1 m-0`}
 `;
 
 let RandomButton = styled.div``;
 let MergeButton = styled.div``;
 let BubbleSortButton = styled.div``;
+let SelectionSortButton = styled.div``;
 
 let TimeTaken = styled.div``;
 
@@ -182,4 +251,4 @@ ${tw`h-screen`}
 `;
 
 let Bar = styled.div`
-${tw` mx-0.5 max-h-screen mb-24`}`;
+${tw` mx-0.5 max-h-screen mb-32`}`;
