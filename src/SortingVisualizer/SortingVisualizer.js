@@ -6,6 +6,7 @@ import styled from "styled-components";
 import tw from "twin.macro"
 import { getBubbleSortAnimations } from "../algorithms/sorting/bubbleSort";
 import { getSelectionsortAnimations } from "../algorithms/sorting/selectionSort";
+import { getInsertionSortAnimations } from "../algorithms/sorting/insertionSort";
 const { JSDOM } = require("jsdom")
 const { window } = new JSDOM()
 
@@ -157,6 +158,61 @@ function SortingVisualizer() {
         }
       });
     }
+  
+  // function for insertion sort
+  const handleInsertionSort = () => {
+    getInsertionSortAnimations(heightArray);
+    // insertionSortAnimation.forEach((animation, idx) => {
+    //   const arrayBars = document.getElementsByClassName("array-bar");
+    //   let animationType = animation.animationType;
+    //   const [barOneIdx, barTwoIdx] = animation.index;
+    //   const barOneStyle = arrayBars[barOneIdx].style;
+    //   const barTwoStyle = arrayBars[barTwoIdx].style;
+    //   if (animationType === "comparing") {
+    //     setTimeout(() => {
+    //       for (let i = 0; i < arrayBars.length; i++) {
+    //         if (arrayBars[i].style.backgroundColor !== "green" && arrayBars[i].style.backgroundColor !== "cyan") {
+    //           arrayBars[i].style.backgroundColor = "#4286f4";
+    //         }
+    //       }
+    //       barTwoStyle.backgroundColor = "red";
+    //     }, idx * 10);
+    //   } else if (animationType === "minimum") {
+    //     setTimeout(() => {
+    //       for (let i = 0; i < arrayBars.length; i++) {
+    //         if (arrayBars[i].style.backgroundColor !== "cyan") {
+    //           arrayBars[i].style.backgroundColor = "#4286f4";
+    //         }
+    //       }
+    //       barOneStyle.backgroundColor = "green";
+    //     }, idx * 10);
+    //   } else if (animationType === "starting") {
+    //     setTimeout(() => {
+    //       for (let i = 0; i < arrayBars.length; i++) {
+    //         arrayBars[i].style.backgroundColor = "#4286f4";
+    //       }
+    //       barOneStyle.backgroundColor = "cyan";
+    //     }, idx * 10);
+    //   }
+    //   else if (animationType === "swaping") {
+    //     const [barOneHeight, barTwoHeight] = animation.value;
+    //     setTimeout(() => {
+    //       barOneStyle.height = `${barOneHeight}%`;
+    //       barTwoStyle.height = `${barTwoHeight}%`;
+    //     }, idx * 10);
+    //   }
+    //   else {
+    //     setTimeout(() => {
+    //       if (idx === insertionSortAnimation.length - 1) {
+    //         stop = window.performance.now()
+    //         setTimeTaken(parseFloat((stop - start) / 1000).toFixed(2))
+    //       }
+    //     }, idx * 10);
+    //   }
+    // });
+    
+  }
+
 
 
     return (
@@ -183,6 +239,11 @@ function SortingVisualizer() {
                 Selection Sort
               </Button>
             </SelectionSortButton>
+            <InsertionSortButoon>
+              <Button variant="text" onClick={() => handleInsertionSort()}>
+                Insertion Sort
+              </Button>
+            </InsertionSortButoon>
             <TimeTaken>
               <p>Time Taken: {timeTaken} seconds</p>
             </TimeTaken>
@@ -243,6 +304,7 @@ let RandomButton = styled.div``;
 let MergeButton = styled.div``;
 let BubbleSortButton = styled.div``;
 let SelectionSortButton = styled.div``;
+let InsertionSortButoon = styled.div``;
 
 let TimeTaken = styled.div``;
 
